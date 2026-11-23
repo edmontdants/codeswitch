@@ -1,0 +1,8 @@
+{
+  "name": "codeswitch",
+  "description": "Talk in your language, ship in English: the agent replies in your native language with domain terms kept in English, and keeps code, specs, docs and commits in English.",
+  "version": "1.0.0",
+  "author": { "name": "Moaaz Alomary" },
+  "license": "MIT",
+  "keywords": ["language", "bilingual", "multilingual", "i18n", "ubiquitous-language", "communication"]
+}

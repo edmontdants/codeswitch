@@ -1,0 +1,12 @@
+{
+  "name": "codeswitch",
+  "description": "codeswitch: an agent skill that talks to you in your native language and keeps code, specs and commits in English.",
+  "owner": { "name": "Moaaz Alomary" },
+  "plugins": [
+    {
+      "name": "codeswitch",
+      "source": "./",
+      "description": "Talk in your language, ship in English."
+    }
+  ]
+}
