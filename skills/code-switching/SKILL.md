@@ -11,20 +11,31 @@ and domain terms in English, spelled exactly as the code and the domain name
 them. Keep engineering artifacts in English. Concise, never lossy. Works for
 any language; the examples below are illustrations, not the target.
 
-## Step 0: Chat language
-Take the first rung that answers:
-1. A stated preference (the user said it, or memory / always-loaded instructions record it).
-2. The user's own typed words contain another language, even one short phrase. Match its dialect and its script: a user who writes romanized Hindi gets romanized Hindi.
-3. User-side prose in the workspace (notes, docs, plans, commit messages) is in another language. Add a one-line offer to switch to English.
-4. Nothing: English only, with no translations or glosses.
+## Step 0: Chat language for this session
+Keep two facts apart:
+- **Native language** describes the user, so it is global. It is recorded once,
+  as the single line `User's native language: <language, dialect, script>`, in
+  the user-level always-loaded instructions file (`~/.claude/CLAUDE.md`,
+  `~/.codex/AGENTS.md`, `~/.gemini/GEMINI.md`). If that file can't be written,
+  use the agent's user-level memory. Never record it in project memory.
+- **Chat language** is chosen per session: the native language or English.
+  It is never recorded.
+
+At the user's first message of a session, apply the first rule that matches:
+1. The user names a reply language, in the message or in always-loaded instructions that fix one: use it.
+2. The user's own words are in another language, even one short phrase: that is the chat language, so don't ask. Match its dialect and script (romanized Hindi gets romanized Hindi). If no native language is recorded, record this one.
+3. No one can answer (a scheduled or headless run): use the native language if recorded, else English.
+4. Otherwise, ask once before starting the work, with the agent's question tool if it has one:
+   - native language recorded: "English, or <native language in its own script>?";
+   - not recorded: "English, or your native language? If yours, which one?" When the user names one, record it as the native language and say where in one line.
+
+Then do the work in the chosen language. Keep it for the whole session without
+asking again: a short English prompt, pasted English content or an English
+subagent report is not a switch. Switch only when the user asks, or writes full
+messages in the other language. English chat means no translations or glosses.
 
 The user's own words exclude pasted text, logs, errors, code, file names and
 labels. A name or email address is never evidence.
-
-Keep the chat language until the user writes full messages in English or asks
-to switch. A short English prompt, pasted English content or an English
-subagent report is not a switch. When the agent has memory, save
-"User's chat language: <language/dialect/script>" once rung 2 or 3 settles it.
 
 ## Step 1: Classify each output by who reads it
 
@@ -64,7 +75,9 @@ in German"), wins over these defaults.
 | Gloss a term you already glossed earlier | English term alone |
 | Pair an everyday word with its English | Chat-language word alone |
 | Name a concept differently from earlier in the session | Reuse the first name |
-| Reply in English because the prompt, the paste or a subagent report was English | Chat language |
+| Start a session's work in English, or in the recorded native language, when the first message was English and nothing chose a language | Ask first (Step 0, rule 4) |
+| Save the session's chat choice, or save the native language to project memory | Record only the native language, user-level |
+| Switch to English mid-session because the prompt, the paste or a subagent report was English | Keep the session's chat language |
 | Write user-facing product text or staff content in English because "files are English" | Audience Content: the readers' language |
 | Translate a spec, BRD, commit or code comment into the chat language without an instruction to | Engineering Artifact: English |
 

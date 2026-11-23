@@ -20,6 +20,14 @@ This skill teaches your agent to do it the same way.
 
 ## What it does
 
+At the start of each session, the agent asks once: **English, or your native language?** You choose per session, because some days you want English. Your choice lasts until the session ends. The agent skips the question in three cases:
+
+- Your first message is already in your language.
+- Your first message names a language.
+- No one is there to answer, for example in a scheduled run.
+
+Your native language is saved once, in your user-level instructions file, so every project knows it. Your per-session choice is never saved.
+
 Before the agent writes anything, it decides who will read it:
 
 | Output | Who reads it | Language |
@@ -80,7 +88,13 @@ At the start of every session, load and follow the code-switching skill before w
 
 If you installed it as a Claude Code plugin, the skill's name is `codeswitch:code-switching`. Use that name in the line.
 
-If you want, also tell the agent your language once (for example "My chat language is Egyptian Arabic"). Otherwise it works your language out from what you type.
+The first time you choose your native language, the agent adds a line like this to the same file. You can also add it yourself:
+
+```markdown
+User's native language: Egyptian Arabic, Arabic script.
+```
+
+If you never want the question, add a fixed reply language instead, for example `Always reply in Spanish.`
 
 ## How it was tested
 
@@ -92,6 +106,7 @@ The skill was built test-first. Each version was given to fresh agents running m
 | Write a handbook section for staff who read Arabic | Written in English, 3 out of 3 runs | Written in Arabic, 3 out of 3 runs |
 | Japanese and Korean replies | Loanwords written in Latin letters (test, deploy) | テスト / デプロイ, 테스트 / 배포 |
 | Spanish, Hinglish, French, German, Arabic | Passed | Still passing |
+| A new session whose first message is in English (v1.1.0) | Picked English or the native language without asking; saved the choice in project memory | Asks once before starting; saves only the native language, user-level (3 out of 3) |
 
 The scenarios are in [`scenarios/`](scenarios/). Run them again after any change to the skill.
 
