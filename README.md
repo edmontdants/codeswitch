@@ -59,7 +59,7 @@ The commit message for the same fix stays in English: `fix(leave): route probati
 ### Claude Code (plugin)
 
 ```
-/plugin marketplace add <owner>/codeswitch
+/plugin marketplace add edmontdants/codeswitch
 /plugin install codeswitch@codeswitch
 ```
 
